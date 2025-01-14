@@ -1,13 +1,13 @@
 // Aqui vamos a gestionar todas las rutas que pemitan subir archivos al servidor
 // Usando controllers/uploadController.js
 import { Router } from 'express';
-import { uploadFile, listFile, deleteFile } from '../controllers/uploadController.js';
+import { uploadFile, listFile, deleteFile, upload } from '../controllers/uploadController.js';
 
 const router = Router();
 
 // Ruta para subir archivos
 
-router.post('/',uploadFile);
+router.post('/',upload.single("file"),uploadFile);
 
 // Ruta para listar archivos
 
