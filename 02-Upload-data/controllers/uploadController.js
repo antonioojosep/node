@@ -20,18 +20,11 @@ const upload = multer({ storage });
 
 // Función para subir archivos
 export const uploadFile = (req, res) => {
-    try {
-        if(req.file){
-            return res.status(400).send('No se ha seleccionado ningún archivo');
-        }
-        res.status(200).send('Archivo subido correctamente');
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+    
 };
 
 // Función para listar archivos
-export const listFile = (req, res) => {
+export const listFile = async (req, res) => {
     try {
         const files = fs.readdirSync(path.join(process.cwd(),'uploads'));
         res.status(200).json(files);
@@ -41,13 +34,12 @@ export const listFile = (req, res) => {
 };
 
 // Función para eliminar archivos
-export const deleteFile = (req, res) => {
-    try {
-        const { filename } = req.params;
-        fs.unlinkSync(path.join(process.cwd(),'uploads', filename));
-        res.status(200).send('Archivo eliminado correctamente');
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+export const deleteFile = async (filename) => {
+    const response = await fetch(`/upload/${filename}`, {
+        method: 'DELETE'
+    });
+    if (!response.ok) {
+        throw new Error('Error al eliminar el archivo');
     }
 };
 
