@@ -1,5 +1,4 @@
 import User from "../models/User.js";
-import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export const register = async (username, password) => {
@@ -7,10 +6,9 @@ export const register = async (username, password) => {
     if (user) {
         throw new Error('El usuario ya existe');
     }
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
 
-    user = new User({ username, password: hashedPassword });
+    // No necesitamos hacer hash aquí porque ya se hace en el modelo
+    user = new User({ username, password });
     await user.save();
 
     return { msg: 'Usuario registrado' };
@@ -21,6 +19,7 @@ export const login = async (username, password) => {
     if (!user) {
         throw new Error('Usuario o contraseña incorrectos');
     }
+
     const validPassword = await user.comparePassword(password);
     if (!validPassword) {
         throw new Error('Usuario o contraseña incorrectos');
