@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
-//import userRoutes from './routes/userRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 import { connectDB } from './config/database.js';
 
 // Cargar las variables de entorno
@@ -19,7 +19,7 @@ connectDB();
 
 // Rutas
 app.use('/auth', authRoutes);
-//app.use('/user', userRoutes);
+app.use('/user', userRoutes);
 
 // Gestionar los errores
 app.use((err, req, res, next) => {

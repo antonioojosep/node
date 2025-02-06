@@ -11,13 +11,13 @@ const cathAsync = (fn) => (req, res, next) => {
 
 
 
-// Funcion para extraer los datos (email y password) del body de la petición
+// Funcion para extraer los datos (username y password) del body de la petición
 
 export const authRegister = cathAsync(async (req, res) => {
     // Descructuramos el email y el password del body
-    const { email, password } = req.body;
+    const { username, password } = req.body;
     // Validamos el email y el password
-    await register(email, password);
+    await register(username, password);
     // Enviamos una respuesta
     res.status(201).json({ message: 'Usuario registrado correctamente' });
 });

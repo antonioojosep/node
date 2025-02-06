@@ -5,7 +5,9 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - MONGO_URI=mongodb://mongo:27017/jwt
+      - MONGODB_URI=mongodb://admin:secret@mongodb:27017/jwt-basic
+      - JWT_SECRET=secret
+      - FRONTEND_URL=http://localhost:5173
     depends_on:
       - mongodb
     volumes:
@@ -19,8 +21,11 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_DATABASE: jwt-basic
     ports:
       - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
 
 volumes:
   mongo_data:
