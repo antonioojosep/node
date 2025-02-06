@@ -9,7 +9,8 @@ services:
       - JWT_SECRET=secret
       - FRONTEND_URL=http://localhost:5173
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_started
     volumes:
       - .:/app
       - /app/node_modules
@@ -19,9 +20,9 @@ services:
     container_name: my-mongo
     restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=secret
-      - MONGO_INITDB_DATABASE=jwt-basic
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_DATABASE: jwt-basic
     ports:
       - "27017:27017"
     volumes:
