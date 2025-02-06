@@ -1,4 +1,17 @@
 services:
+  mongodb:
+    image: mongo:4.4
+    container_name: my-mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+      - MONGO_INITDB_DATABASE=jwt-basic
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
   app:
     build: .
     container_name: node_app
@@ -9,26 +22,10 @@ services:
       - JWT_SECRET=secret
       - FRONTEND_URL=http://localhost:5173
     depends_on:
-      mongodb:
-        condition: service_started
+      - mongodb
     volumes:
       - .:/app
       - /app/node_modules
-
-  mongodb:
-    image: mongo:4.4
-    container_name: my-mongo
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: secret
-      MONGO_INITDB_DATABASE: jwt-basic
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-    command: mongod --auth
 
 volumes:
   mongo_data:
