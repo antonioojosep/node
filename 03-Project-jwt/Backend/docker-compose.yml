@@ -5,7 +5,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - MONGODB_URI=mongodb://admin:secret@mongodb:27017/jwt-basic
+      - MONGODB_URI=mongodb://admin:secret@mongodb:27017/jwt-basic?authSource=admin
       - JWT_SECRET=secret
       - FRONTEND_URL=http://localhost:5173
     depends_on:
@@ -26,6 +26,7 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    command: mongod --auth
 
 volumes:
   mongo_data:
