@@ -5,20 +5,22 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - MONGO_URI=mongodb://mongo:27017/mydatabase
+      - MONGO_URI=mongodb://mongo:27017/jwt
     depends_on:
-      - mongo
+      - mongodb
     volumes:
       - .:/app
       - /app/node_modules
 
-  mongo:
-    image: mongo:6
-    container_name: mongodb
+  mongodb:
+    image: mongo:4.4
+    container_name: my-mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secret
     ports:
       - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
 
 volumes:
   mongo_data:

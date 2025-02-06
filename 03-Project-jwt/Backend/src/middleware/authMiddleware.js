@@ -17,6 +17,6 @@ export const auth = (req, res, next) => {
         // Continuamos con el siguiente middleware
         next();
     } catch (error) {
-        rex.status(401).json({ message: 'Debes estar autenticado para acceder a esta ruta' });
+        res.status(401).json({ message: 'Debes estar autenticado para acceder a esta ruta' });
     }
 };
