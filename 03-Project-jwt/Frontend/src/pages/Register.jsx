@@ -3,14 +3,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:4000/api/auth/register", { email, password });
+      await axios.post("http://localhost:3000/auth/register", { username, password });
       navigate("/login");
     } catch (error) {
       console.error("Error al registrarse", error);
@@ -21,7 +21,7 @@ const Register = () => {
     <div>
       <h2>Registro</h2>
       <form onSubmit={handleSubmit}>
-        <input type="email" placeholder="Correo" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input type="username" placeholder="Usuario" value={username} onChange={(e) => setUsername(e.target.value)} />
         <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} />
         <button type="submit">Registrarse</button>
       </form>

@@ -5,13 +5,14 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js'
 import { connectDB } from './config/database.js';
+import { corsOptions } from './config/cors.js';
 
 // Cargar las variables de entorno
 dotenv.config();
 const app = express();
 
 // Middlewares
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Conexion a la base de datos

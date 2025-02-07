@@ -20,4 +20,4 @@ RUN npm run build
 EXPOSE 5173
 
 # Comando para ejecutar la aplicación
-CMD ["npm", "run", "preview"]
+CMD ["npm", "run", "dev", "--", "--host"]
