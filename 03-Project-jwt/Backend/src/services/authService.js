@@ -22,7 +22,7 @@ export const login = async (username, password) => {
 
     const validPassword = await user.comparePassword(password);
     if (!validPassword) {
-        throw new Error('Usuario o contraseña incorrectos');
+        throw new Error('Contraseña incorrecta');
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
