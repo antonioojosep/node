@@ -24,6 +24,7 @@ export const AuthProvider = ({ children }) => {
       setUser({ token: data.token });
       navigate("/dashboard");
     } catch (error) {
+      alert("Error al iniciar sesión");
       console.error("Error al iniciar sesión", error);
     }
   };
