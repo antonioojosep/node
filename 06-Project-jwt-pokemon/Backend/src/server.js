@@ -3,7 +3,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
-import userRoutes from './routes/userRoutes.js'
+import userRoutes from './routes/userRoutes.js';
+import pokemonRoutes from './routes/pokemonRoutes.js';
 import { connectDB } from './config/database.js';
 import { corsOptions } from './config/cors.js';
 
@@ -21,6 +22,7 @@ connectDB();
 // Rutas
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
+app.use('/pokemon', pokemonRoutes);
 
 // Gestionar los errores
 app.use((err, req, res, next) => {

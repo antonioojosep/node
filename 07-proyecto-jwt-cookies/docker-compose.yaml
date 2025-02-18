@@ -1,0 +1,58 @@
+services:
+# Servicio MongoDB
+  mongo:
+    image: mongo:4
+    container_name: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    #Servicio para mongo express
+    image: mongo-express:1.0
+    container_name: mongo-express
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSER: root
+      ME_CONFIG_MONGODB_ADMINPASS: example
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: hlanz
+    depends_on:
+      - mongo
+
+  # Servicio backend de node 
+  backend:
+    build: .
+    container_name: backend
+    ports:
+      - 3000:3000
+    environment:
+      MONGODB_URI: "mongodb://root:example@mongo:27017/auth_db?authSource=admin"
+      JWT_SECRET: tu_clave_secreta
+    depends_on:
+      - mongo
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend
+
+# Volumen para la persistencia de las bases de datos
+volumes:
+  mongo_data:
+
+
+
+
+ 
