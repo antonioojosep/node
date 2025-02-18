@@ -32,25 +32,15 @@ export const uploadFile = (req, res) => {
 };
 
 // Controlador para listar los archivos subidos
-export const listFiles = (req, res) => {
-  const uploadDir = path.join(process.cwd(), "uploads");
-  fs.readdir(uploadDir, (err, files) => {
-    if (err) {
-      return res.status(500).send("Error al listar archivos");
-    }
-    let size = 0
-    for (const file of files) {
-      size += fs.statSync(path.join(uploadDir, file), (err) => {
-        if (err) {
-          return res.status(500).send("Error al obtener tamaño")
-        }
-      }).size
-    }
-    res.json({
-      files: files,
-      size: (size / 1024 / 1024).toFixed(2) // Tamaño en MB
-    }); // Devolvemos los nombres de los archivos en formato JSON
-  });
+
+export const listFiles = async (req, res) => {
+  try {
+    const files = await listData();  // Llamamos a la función listData para obtener los archivos
+    res.json({Files :  files },);  // Respondemos con los datos
+  } catch (error) {
+    console.error("Error al obtener archivos:", error);
+    res.status(500).json({ message: "Error al obtener archivos", error });
+  }
 };
 
 // Controlador para listar los archivos reciclados
@@ -109,3 +99,32 @@ export const voidRecicled = (req, res) => {
     res.status(500).send('La carpeta no existe');
 }
 }
+
+
+export const listData = async () => {
+  const uploadDir = path.join(process.cwd(), "uploads");
+
+  try {
+    const files = await fs.promises.readdir(uploadDir);
+
+    let fileDetails = [];
+    for (const file of files) {
+      try {
+        const filePath = path.join(uploadDir, file);
+        const stats = await fs.promises.stat(filePath);
+        const sizeInMB = parseFloat((stats.size / 1024 / 1024).toFixed(2)); // Convertir a MB
+        
+        fileDetails.push({
+          name: file,
+          size: sizeInMB
+        });
+      } catch (error) {
+        throw new Error(`Error al obtener información del archivo ${file}`);
+      }
+    }
+
+    return fileDetails;
+  } catch (err) {
+    throw new Error("Error al listar archivos");
+  }
+};

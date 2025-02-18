@@ -1,6 +1,8 @@
 // Obtener referencias
 const uploadForm = document.getElementById("uploadForm");
 const fileList = document.getElementById("fileList");
+const recycleList = document.getElementById("recycleList");
+const mail = document.getElementById("mail");
 
 // Función para listar los archivos subidos
 async function fetchFiles() {
@@ -13,14 +15,14 @@ async function fetchFiles() {
   fileList.innerHTML = ""; // Limpiar la lista antes de renderizar
 
   // Renderizar los archivos en la lista
-  files.files.forEach((file) => {
+  files.Files.forEach((file) => {
     const li = document.createElement("li");
     li.id="btn1";
     li.className =
       "flex justify-between items-center bg-gray-100 p-2 rounded-lg shadow-sm";
     li.innerHTML = `
-      <span>${file}</span>
-      <button class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600" data-filename="${file}">Eliminar</button>
+      <span>${file.name}: ${file.size}MB</span>
+      <button class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600" data-filename="${file.name}">Eliminar</button>
     `;
     fileList.appendChild(li);
   });
@@ -32,8 +34,9 @@ async function fetchFiles() {
     " w-full bg-gray-300 rounded-lg overflow-hidden h-6 mt-5 ";
   progress.className =
       ` h-full w-0 bg-green-500 rounded-lg`;
-  progress.innerHTML = `<p>${files.size}MB</p>`
-  progress.style.width= `${files.size * 10}%`;
+  let totalSize = parseFloat(files.Files.reduce((acc, file) => acc + file.size, 0).toFixed(2));
+  progress.innerHTML = `<p>${totalSize}MB</p>`
+  progress.style.width= `${totalSize * 10}%`;
   fileList.appendChild(container);
   container.appendChild(progress);
 
@@ -43,9 +46,9 @@ async function fetchFiles() {
       const fileName = e.target.dataset.filename;
       await deleteFile(fileName);
       fetchFiles(); // Actualizar la lista
+      fetchRecicledFiles(); // Actualizar la lista de reciclaje
     });
   });
-
   fetchRecicledFiles();
 }
 
@@ -56,6 +59,7 @@ async function fetchRecicledFiles() {
     return;
   }
   const filesRecicled = await response.json();
+  recycleList.innerHTML = "";
 
 
   // Renderizar los archivos en la lista
@@ -66,7 +70,7 @@ async function fetchRecicledFiles() {
     li.innerHTML = `
       <span>${file}</span>
     `;
-    fileList.appendChild(li);
+    recycleList.appendChild(li);
   });
 
   // Espacio ocupado de la carpeta recycle
@@ -82,12 +86,12 @@ async function fetchRecicledFiles() {
   progress.className =
       "h-full w-0 bg-green-500 rounded-lg";
   progress.style.width= `${filesRecicled.size * 100}%`;
-  fileList.appendChild(container);
+  recycleList.appendChild(container);
   container.appendChild(progress);
-  fileList.appendChild(empty);
+  recycleList.appendChild(empty);
   empty.addEventListener("click", async (e) => {
     await voidRecicled();
-    fetchFiles()
+    fetchRecicledFiles();
   })
 }
 
@@ -126,6 +130,13 @@ uploadForm.addEventListener("submit", async (e) => {
     console.error("Error al subir el archivo");
   }
 });
+
+// Enviar correo electronico
+mail.addEventListener("click", async (e) => {
+  e.preventDefault();
+  await fetch("/mail");
+});
+
 
 // Cargar la lista de archivos al cargar la página
 document.addEventListener("DOMContentLoaded", fetchFiles);

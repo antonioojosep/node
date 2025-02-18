@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import uploadRoutes from "./routes/uploadRoutes.js";
+import mailRoutes from "./routes/mailRoutes.js";
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Usar las rutas para manejar uploads/files
 app.use("/uploads", uploadRoutes);
+app.use("/mail", mailRoutes);
 
 // Configuramos el puerto donde va a escuchar el servidor
 const PORT = 3000;
