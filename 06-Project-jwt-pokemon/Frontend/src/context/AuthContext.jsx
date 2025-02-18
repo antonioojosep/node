@@ -20,8 +20,9 @@ export const AuthProvider = ({ children }) => {
     try {
       const { data } = await axios.post("http://localhost:3000/auth/login", { username, password });
       localStorage.setItem("token", data.token);
+      localStorage.setItem("userId", data.userId);
       axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
-      setUser({ token: data.token });
+      setUser({ token: data.token , userId: data.userId  });
       navigate("/dashboard");
     } catch (error) {
       alert("Error al iniciar sesión");
