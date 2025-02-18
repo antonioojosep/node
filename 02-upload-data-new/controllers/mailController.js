@@ -1,8 +1,12 @@
 import sgMail from '@sendgrid/mail';
 import { listData } from './uploadController.js';
+import dotenv from 'dotenv';
+
+// Cargamos las variables de entorno
+dotenv.config();
 
 // Correo electronico
-sgMail.setApiKey('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');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export const sendEmail = async (req, res) => {
   try {
