@@ -1,43 +1,125 @@
-# Proyecto Upload DATA en Node Js
+# Proyecto de Gestión de Archivos con Node.js
 
-## **1. Estructura del proyecto**
+Este proyecto implementa un sistema de gestión de archivos con funcionalidades de carga, visualización, reciclaje y envío por correo electrónico.
 
-La estructura del proyecto sigue igual:
+## Características
 
-```bash
-upload-project/
+- Carga de archivos
+- Visualización de archivos subidos
+- Papelera de reciclaje
+- Visualización del espacio ocupado
+- Envío de archivos por correo electrónico
+- Interfaz gráfica con Tailwind CSS
+- Dockerización del proyecto
+
+## Estructura del Proyecto
+
+```
+02-upload-data-new/
 ├── controllers/
+│   ├── mailController.js
 │   └── uploadController.js
 ├── public/
-│   └── index.html
+│   ├── index.html
+│   ├── input.css
+│   ├── output.css
+│   └── scripts/
+│       └── main.js
 ├── routes/
+│   ├── mailRoutes.js
 │   └── uploadRoutes.js
 ├── uploads/
-│   └── (aquí se guardarán los archivos subidos)
+│   └── (archivos subidos)
+├── recicled/
+│   └── (archivos reciclados)
+├── .env
 ├── app.js
+├── Dockerfile
+├── docker-compose.yml
 └── package.json
 ```
 
----
+## Requisitos Previos
 
-## **2. Implementación del proyecto**
+- Node.js (v16 o superior)
+- Docker (opcional)
+- Cuenta en SendGrid para envío de correos
 
-### **2.1 Inicializa el proyecto**
+## Instalación
 
-Ejecuta estos comandos en la terminal:
-
+1. Clonar el repositorio:
 ```bash
-mkdir upload-project
-cd upload-project
-npm init -y
+git clone <url-del-repositorio>
+cd 02-upload-data-new
 ```
 
-### **2.2 Instala dependencias**
-
+2. Instalar dependencias:
 ```bash
-npm install express multer
+npm install
 ```
 
-### Implementacion
+3. Crear archivo .env con las siguientes variables:
+```
+SENDGRID_API_KEY=tu_api_key_de_sendgrid
+```
 
-Modificar el proyecto upload data para que cuando elimine un fichero se traslada a una carpeta recicled. En la pagina web debe haber un grafico(barra) que me indique el espacio ocupado por upload y recicled en el disco y un boton para vaciar recicled
+4. Iniciar el servidor:
+```bash
+npm start
+```
+
+## Uso con Docker
+
+1. Construir la imagen:
+```bash
+docker-compose build
+```
+
+2. Iniciar el contenedor:
+```bash
+docker-compose up
+```
+
+## API Endpoints
+
+### Gestión de Archivos
+- `POST /uploads`: Subir un archivo
+- `GET /uploads`: Listar archivos subidos
+- `POST /uploads/:fileName`: Mover archivo a papelera
+- `GET /uploads/recicled`: Listar archivos en papelera
+- `DELETE /uploads/recicled`: Vaciar papelera
+
+### Correo Electrónico
+- `GET /mail`: Enviar archivos por correo
+
+## Características Detalladas
+
+### Sistema de Archivos
+- Carga de archivos con visualización en tiempo real
+- Barra de progreso que muestra el espacio ocupado
+- Sistema de papelera de reciclaje
+- Gestión de espacio en disco
+
+### Interfaz de Usuario
+- Diseño responsive con Tailwind CSS
+- Visualización de archivos con tamaños
+- Indicadores de espacio usado
+- Botones de acción intuitivos
+
+### Correo Electrónico
+- Integración con SendGrid
+- Envío de archivos como adjuntos
+- Formato JSON para listado de archivos
+
+## Tecnologías Utilizadas
+
+- Express.js: Framework web
+- Multer: Gestión de subida de archivos
+- SendGrid: Servicio de correo electrónico
+- Tailwind CSS: Framework CSS
+- Docker: Containerización
+
+
+## Licencia
+
+Este proyecto está bajo la Licencia ISC.
