@@ -10,11 +10,12 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
     if (token) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      setUser({ token });
+      setUser({ token: token, userId: userId  });
     }
-  }, []);
+  }, [navigate]);
 
   const login = async (username, password) => {
     try {

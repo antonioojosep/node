@@ -21,17 +21,34 @@ export const PokemonProvider = ({ children }) => {
 
     const fetchFavorites = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/user/favorites');
-            setFavorites(response.data.favorites);
+            const response = await axios.get('http://localhost:3000/user/favorites', { headers: { 'Authorization': `Bearer ${user.token}` } }  );
+            setFavorites(response.data);
         } catch (error) {
             console.error("Error fetching favorites", error);
         }
     };
 
+    const searchPokemons = (searchTerm) => {
+        if (!searchTerm) {
+            fetchPokemons();
+            return;
+        }
+        
+        const filtered = pokemons.filter(pokemon => 
+            pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setPokemons(filtered);
+    };
+
     const toggleFavorite = async (pokemonId) => {
         try {
-            const response = await axios.post(`http://localhost:3000/user/favorites/${user.userId}`, { pokemonId }  );
-            setFavorites(response.data.favorites);
+            if (favorites.some(favorite => favorite._id === pokemonId)) {
+                await axios.delete(`http://localhost:3000/user/favorites/${user.userId}`, { data: { pokemonId: pokemonId }, headers: { 'Authorization': `Bearer ${user.token}` } }  );
+                fetchFavorites();
+                return;
+            }
+            await axios.post(`http://localhost:3000/user/favorites/${user.userId}`, { pokemonId: pokemonId }, { headers: { 'Authorization': `Bearer ${user.token}` } }  );
+            fetchFavorites();
         } catch (error) {
             console.error("Error toggling favorite", error);
         }
@@ -43,7 +60,7 @@ export const PokemonProvider = ({ children }) => {
     }, []);
 
     return (
-      <PokemonContext value={{ pokemons, favorites, toggleFavorite}}>
+      <PokemonContext value={{ pokemons, favorites, toggleFavorite, searchPokemons }}>
         {children}
       </PokemonContext>
     );

@@ -1,7 +1,15 @@
+import mongoose from "mongoose";
 import User from "../models/User.js";
 
 export const addFavorite = async (userId, pokemonId) => {
-    const user = await User.findByIdAndUpdate(userId, { $push: { favorites: pokemonId } }, { new: true });
+    if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(pokemonId)) {
+        throw new Error("IDs inválidos");
+    }
+    const user = await User.findByIdAndUpdate(
+        userId,
+        { $addToSet: { favorites: new mongoose.Types.ObjectId(pokemonId) } },
+        { new: true }
+    );
     if (!user) {
         throw new Error('No se encontró el usuario');
     }
