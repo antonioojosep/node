@@ -57,7 +57,7 @@ export const PokemonProvider = ({ children }) => {
     useEffect(() => {
         fetchPokemons();
         fetchFavorites();
-    }, []);
+    }, [user]);
 
     return (
       <PokemonContext value={{ pokemons, favorites, toggleFavorite, searchPokemons }}>
