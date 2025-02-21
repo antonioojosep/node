@@ -1,22 +1,29 @@
-// Aqui vamos a gestionar todas las rutas que pemitan subir archivos al servidor
-// Usando controllers/uploadController.js
-import { Router } from 'express';
-import { uploadFile, listFile, deleteFile, upload } from '../controllers/uploadController.js';
+// routes/uploadRoutes.js
+import { Router } from "express";
+import {
+  upload,
+  uploadFile,
+  listFiles,
+  deleteFile,
+  listRecicledFiles,
+  voidRecicled,
+} from "../controllers/uploadController.js";
 
 const router = Router();
 
-// Ruta para subir archivos
+// Ruta para subir archivo
+router.post("/", upload.single("file"), uploadFile);
 
-router.post('/',upload.single("file"),uploadFile);
+// Ruta para listar archivos reciclados
+router.get("/recicled", listRecicledFiles)
 
-// Ruta para listar archivos
+// Ruta para listar los archivos subidos
+router.get("/", listFiles);
 
-router.get('/',listFile);
+// Ruta para reciclar un archivo
+router.post("/:fileName", deleteFile);
 
-// Ruta para eliminar archivos
-
-router.delete('/:filename',deleteFile);
-
-// Ruta para descargar archivos
+// Ruta para eliminar un archivo
+router.delete("/recicled", voidRecicled);
 
 export default router;

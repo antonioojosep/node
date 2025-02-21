@@ -1,5 +1,5 @@
 {
-  "name": "02-upload-data",
+  "name": "upload-project",
   "version": "1.0.0",
   "main": "app.js",
   "type": "module",
@@ -7,11 +7,16 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@sendgrid/mail": "^8.1.4",
+    "@tailwindcss/cli": "^4.0.6",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.5-lts.1",
+    "tailwindcss": "^4.0.6"
   }
 }

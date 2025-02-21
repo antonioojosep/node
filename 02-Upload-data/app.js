@@ -1,38 +1,47 @@
-// import necesarios
-import express from 'express';
-import { fileURLToPath } from 'url';
-import path from 'path';
-import uploadRouter from './routes/uploadRoutes.js';
-import fs from 'fs';
+// app.js
+import express from "express";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import uploadRoutes from "./routes/uploadRoutes.js";
+import mailRoutes from "./routes/mailRoutes.js";
+
+const app = express();
+
+// Obtener la ruta absoluta de la carpeta actual
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 
-const app = express(); // Crear la instancia de express
+  // Ruta de la carpeta "uploads"
+const uploadsDir = path.join(__dirname, "uploads");
+const recicledDir = path.join(__dirname, "recicled")
 
-// Para obtener la ruta del fichero actual
-const __filename = fileURLToPath(import.meta.url); // Obtener la ruta del fichero actual
-const __dirname = path.dirname(__filename); // Obtener el directorio del fichero actual
-
-// Ruta de la carpeta uploads
-const uploadDir = path.join(__dirname, 'uploads');
-
-// Comprobar si la carpeta uploads existe y si no la crea
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-    console.log(`Carpeta ${uploadDir} creada`);
-}else{
-    console.log(`La carpeta ${uploadDir} ya existe`);
+// Verificar si la carpeta "uploads" existe, si no, crearla
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log(`Carpeta "${uploadsDir}" creada exitosamente.`);
+} else {
+  console.log(`Carpeta "${uploadsDir}" ya existe.`);
 }
 
-// Middleware para servir archivos estáticos
-app.use(express.static(path.join(__dirname, 'public'))); // Establecer la carpeta public como carpeta estática
+// Verificar si la carpeta "recicled" existe, si no, crearla
+if (!fs.existsSync(recicledDir)) {
+  fs.mkdirSync(recicledDir, { recursive: true });
+  console.log(`Carpeta "${recicledDir}" creada exitosamente.`);
+} else {
+  console.log(`Carpeta "${recicledDir}" ya existe.`);
+}
 
-// Asociar la carpeta para la subida de archivos en el endpoint /uploads/files
-app.use('/uploads/files', uploadRouter);
+// Servir archivos estáticos (como el HTML)
+app.use(express.static(path.join(__dirname, "public")));
 
-// Configurar el puerto
+// Usar las rutas para manejar uploads/files
+app.use("/uploads", uploadRoutes);
+app.use("/mail", mailRoutes);
+
+// Configuramos el puerto donde va a escuchar el servidor
 const PORT = 3000;
-
-// Iniciar el servidor
 app.listen(PORT, () => {
-    console.log(`Servidor iniciado en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
