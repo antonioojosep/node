@@ -1,1 +1,6 @@
 API-LUZ-TIEMPO
+# Ignorar todos los archivos .env en cualquier subcarpeta
+**/.env
+
+# Ignorar todos los node_modules en cualquier subcarpeta
+**/node_modules/
