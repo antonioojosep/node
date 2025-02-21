@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import { PokemonProvider } from "./context/PokemonContext";
+import PokemonDetails from "./pages/PokemonDetails";
 
 const App = () => {
 
@@ -16,6 +17,7 @@ const App = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={<PokemonProvider><Dashboard /></PokemonProvider>} />
+      <Route path="/pokemon/:id" element={<PokemonDetails />} />
     </Routes>
   );
 };

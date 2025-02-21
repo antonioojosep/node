@@ -10,7 +10,7 @@ const PokemonCard = (props) => {
     <div className="m-4 p-2 bg-blue-300 border-2 border-black rounded-lg flex flex-col justify-center items-center" 
         key={pokemon.id}
         >
-        <img className=" w-28 h-32 " src={pokemon.image} alt="" />
+        <img className=" w-28 h-32 " src={pokemon.image} onClick={() => window.location.href = `/pokemon/${pokemon._id}`} />
         <h1 className="text-center">{pokemon.name}</h1>
         <p>{pokemon.height} Kg</p>
         <button 

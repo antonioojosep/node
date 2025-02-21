@@ -21,23 +21,27 @@ export const PokemonProvider = ({ children }) => {
 
     const fetchFavorites = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/user/favorites', { headers: { 'Authorization': `Bearer ${user.token}` } }  );
+            const response = await axios.get('http://localhost:3000/user/favorites'  );
             setFavorites(response.data);
         } catch (error) {
             console.error("Error fetching favorites", error);
         }
     };
 
-    const searchPokemons = (searchTerm) => {
+    const searchPokemons = async (searchTerm) => {
         if (!searchTerm) {
             fetchPokemons();
             return;
         }
+        try {
+            const name = searchTerm.toLowerCase();
+            const response = await axios.get(`http://localhost:3000/pokemon/search?name=${name}`);
+            setPokemons(response.data);
+        } catch (error) {
+            setPokemons([]);
+        }
         
-        const filtered = pokemons.filter(pokemon => 
-            pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setPokemons(filtered);
+        
     };
 
     const toggleFavorite = async (pokemonId) => {
@@ -55,8 +59,10 @@ export const PokemonProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        fetchPokemons();
-        fetchFavorites();
+        if (user) {
+            fetchPokemons();
+            fetchFavorites();
+        }
     }, [user]);
 
     return (

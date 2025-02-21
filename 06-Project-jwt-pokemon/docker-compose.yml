@@ -4,9 +4,9 @@ services:
     container_name: my-mongo
     restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=secret
-      - MONGO_INITDB_DATABASE=jwt-basic
+      - MONGO_INITDB_ROOT_USERNAME="${MONGO_INITDB_ROOT_USERNAME}"
+      - MONGO_INITDB_ROOT_PASSWORD="${MONGO_INITDB_ROOT_PASSWORD}"
+      - MONGO_INITDB_DATABASE="${MONGO_INITDB_DATABASE}"
     ports:
       - "27017:27017"
     volumes:
@@ -18,14 +18,15 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - MONGODB_URI=mongodb://admin:secret@mongodb:27017/jwt-basic?authSource=admin
-      - JWT_SECRET=secret
-      - FRONTEND_URL=http://localhost:5173
+      - MONGODB_URI="${MONGODB_URI}"
+      - JWT_SECRET="${JWT_SECRET}"
+      - FRONTEND_URL="${FRONTEND_URL}"
     depends_on:
       - mongodb
     volumes:
       - ./Backend:/app
       - /app/node_modules
+      - ./Backend/.env:/app/.env
 
   frontend:
     build: ./Frontend
