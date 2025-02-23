@@ -36,7 +36,7 @@ export const saveMovies = async (req, res) => {
         if (await Movie.countDocuments() > 0) {
             return console.log("Ya hay películas en la base de datos");
         }
-        const response = await fetch('https://api.themoviedb.org/3/movie/popular?api_key=430f8d504489e4d548f4c1abbab10d12&language=es-ES&page=1');
+        const response = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.API_KEY}&language=es-ES&page=1`);
 
         if (!response.ok) {
             return console.log("Error al obtener las películas");
