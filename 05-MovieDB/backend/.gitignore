@@ -4,4 +4,4 @@ pnpm-lock.yaml
 .env
 logs/
 *.log
-mongodb_data/
+mongo_data/

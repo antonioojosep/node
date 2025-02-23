@@ -7,6 +7,7 @@ import { connectDB } from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import movieRoutes from './routes/movieRoutes.js';
 import favoriteRoutes from './routes/favoriteRoutes.js';
+import commentRoutes from './routes/commentRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -23,6 +24,7 @@ connectDB();
 app.use('/auth', authRoutes);
 app.use('/movies', movieRoutes);
 app.use('/favorites', favoriteRoutes);
+app.use('/comments', commentRoutes);
 
 
 // Gestionar los errores
