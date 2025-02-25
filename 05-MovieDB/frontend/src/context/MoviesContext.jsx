@@ -1,8 +1,8 @@
-import React from 'react'
-import { useEffect } from 'react';
-import { useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
-const MoviesContext = () => {
+const MoviesContext = createContext();
+
+export const MoviesProvider = ({ children }) => {
     const [movies, setMovies] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -14,6 +14,7 @@ const MoviesContext = () => {
             setIsLoading(false);
         } catch (error) {
             console.error("Error fetching Movies", error);
+            setIsLoading(false);
         }
     };
 
@@ -21,11 +22,11 @@ const MoviesContext = () => {
         fetchMovies();
     }, []);
 
-  return (
-    <MoviesContext value={{ movies }}>
-      {children}
-    </MoviesContext>
-  )
-}
+    return (
+        <MoviesContext value={{ movies, isLoading }}>
+            {children}
+        </MoviesContext>
+    );
+};
 
-export default MoviesContext
+export default MoviesContext;

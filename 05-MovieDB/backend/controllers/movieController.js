@@ -43,19 +43,19 @@ export const saveMovies = async (req, res) => {
         }
         const data = await response.json();
         
-        for (const movie of data.results) {
-            await Movie.create({
+        for (let movie of data.results) {
+            const newMovie = Movie({
                 title: movie.title,
                 poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
                 release_date: movie.release_date,
                 vote_average: movie.vote_average,
                 overview: movie.overview
             });
-            await new Movie.save();
+            await newMovie.save();
         }
         console.log("Movies fetched and saved successfully!");  
 
     }catch (error) {
-        console.log("Error al guardar las películas");
+        console.log("Error al guardar las películas", error);
     }
 }

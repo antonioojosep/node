@@ -9,7 +9,6 @@ export const connectDB = async () => {
         });
         console.log('Conexion a MONGODB exitosa');
         await saveMovies();
-        await saveMovies();
     } catch (error) {
         console.log('Error en la conexion a MONGODB');
         process.exit(1);

@@ -14,9 +14,8 @@ export const login = async (req, res) => {
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'none',
             maxAge: 3600000, // 1 hora
-            sameSite: "strict"
         });
-        res.json({ mensaje: 'Login exitoso' });
+        res.json({ mensaje: 'Login exitoso', userId: user._id });
     }
     catch (error) {
         res.status(500).json({ mensaje: 'Error al hacer login'});
